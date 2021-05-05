@@ -26,7 +26,7 @@ func init() {
 
 	Config = ConfigList{
 		ApiKey:  cfg.Section("youtube").Key("key").String(),
-		BaseURL: cfg.Section("web").Key("baseURL").String(),
+		BaseURL: cfg.Section("youtube").Key("baseURL").String(),
 		Port:    cfg.Section("web").Key("port").String(),
 	}
 }
