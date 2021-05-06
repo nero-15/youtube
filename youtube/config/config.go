@@ -9,7 +9,7 @@ import (
 
 // ConfigList is api key struct
 type ConfigList struct {
-	ApiKey  string
+	APIKey  string
 	BaseURL string
 	Port    string
 }
@@ -25,8 +25,8 @@ func init() {
 	}
 
 	Config = ConfigList{
-		ApiKey:  cfg.Section("youtube").Key("key").String(),
-		BaseURL: cfg.Section("web").Key("baseURL").String(),
+		APIKey:  cfg.Section("youtube").Key("key").String(),
+		BaseURL: cfg.Section("youtube").Key("baseURL").String(),
 		Port:    cfg.Section("web").Key("port").String(),
 	}
 }
