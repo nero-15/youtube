@@ -33,7 +33,7 @@ func main() {
 		queryParams.Set("key", config.Config.APIKey)
 		queryParams.Set("part", "snippet")
 		queryParams.Set("order", "relevance") // rating, viewCount
-		queryParams.Set("q", "inter")
+		queryParams.Set("q", "inter")         // TODO: 入力値で検索できるようにする
 		queryParams.Set("regionCode", "jp")
 		queryParams.Set("type", "video")
 		baseURL.RawQuery = queryParams.Encode()
