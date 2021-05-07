@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"net/http"
 	"net/url"
@@ -42,11 +41,11 @@ func main() {
 			log.Fatal(err)
 		}
 		defer resp.Body.Close()
+
 		buf := new(bytes.Buffer)
 		buf.ReadFrom(resp.Body)
-		newStr := buf.String()
-		fmt.Printf(newStr)
-		return c.String(http.StatusOK, baseURL.String())
+
+		return c.String(http.StatusOK, buf.String())
 	})
 
 	e.Logger.Fatal(e.Start(config.Config.Port))
