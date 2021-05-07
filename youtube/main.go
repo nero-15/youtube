@@ -27,16 +27,14 @@ func main() {
 		// https://www.googleapis.com/youtube/v3/search になるように path を設定
 		baseURL.Path = path.Join(baseURL.Path, "search")
 
-		// TODO: データ取得実装
-		//https://developers.google.com/youtube/v3/sample_requests
-		//https://developers.google.com/youtube/v3/docs/search/list?apix=true&apix_params=%7B%22part%22%3A%22snippet%22%2C%22q%22%3A%22YouTube%20Data%20API%22%2C%22type%22%3A%22video%22%2C%22videoCaption%22%3A%22closedCaption%22%7D
-
 		// パラメータをセット
+		//https://developers.google.com/youtube/v3/docs/search/list?apix=true&apix_params=%7B%22part%22%3A%22snippet%22%2C%22q%22%3A%22YouTube%20Data%20API%22%2C%22type%22%3A%22video%22%2C%22videoCaption%22%3A%22closedCaption%22%7D
 		queryParams := baseURL.Query()
 		queryParams.Set("key", config.Config.APIKey)
 		queryParams.Set("part", "snippet")
-		queryParams.Set("order", "videoCount")
+		queryParams.Set("order", "relevance") // rating, viewCount
 		queryParams.Set("q", "inter")
+		queryParams.Set("regionCode", "jp")
 		queryParams.Set("type", "video")
 		baseURL.RawQuery = queryParams.Encode()
 		resp, err := http.Get(baseURL.String())
