@@ -39,29 +39,28 @@
 	</header>
 
 	<main id="app">
-		{{message}}
 		<section class="py-5 text-center container">
 			<div class="row py-lg-5">
 				<div class="col-lg-6 col-md-8 mx-auto">
 					<h1 class="fw-light">Youtube 検索</h1>
 					<p class="lead text-muted">検索したいキーワードを入力してください</p>
-					<form action="/" method="get">
+					<form>
 						<div class="mb-3">
-							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝">
+							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝" v-model="q">
 						</div>
-						<button type="submit" class="btn btn-primary">検索</button>
+						<button type="submit" class="btn btn-primary" @click.prevent="searchItems">検索</button>
 					</form>
 				</div>
 			</div>
 		</section>
 
-		<div class="album py-5 bg-light">
+		<div class="album py-5 bg-light" v-if="showItems()">
 			<div class="container">
 
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
 					<!-- TODO: 取得したデータを以下で一覧表示する -->
-					<div class="col">
+					<div class="col" v-for="item in items">
 						<div class="card shadow-sm">
 							<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg><!-- TODO: サムネイル表示 -->
 
@@ -96,7 +95,16 @@
 		var app = new Vue({
 			el: '#app',
 			data: {
-				message: 'Hello Vue!'
+				items: [],
+				q: '',
+			},
+			methods: {
+				showItems: function () {
+					return this.items.length > 0
+				},
+				searchItems: function () {
+					alert(this.q)//TODO: ajax実装
+				},
 			}
 		})
 	</script>
