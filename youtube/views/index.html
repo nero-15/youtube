@@ -5,6 +5,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<title>youtube</title>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-giJF6kkoqNQ00vy+HMDP7azOuL0xtbfIcaT9wjKHr8RbDVddVHyTfAAsrekwKmP1" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 
 	<style>
 			.bd-placeholder-img {
@@ -37,29 +38,29 @@
 		</div>
 	</header>
 
-	<main>
+	<main id="app">
 		<section class="py-5 text-center container">
 			<div class="row py-lg-5">
 				<div class="col-lg-6 col-md-8 mx-auto">
 					<h1 class="fw-light">Youtube 検索</h1>
 					<p class="lead text-muted">検索したいキーワードを入力してください</p>
-					<form action="/" method="get">
+					<form>
 						<div class="mb-3">
-							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝">
+							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝" v-model="q">
 						</div>
-						<button type="submit" class="btn btn-primary">検索</button>
+						<button type="submit" class="btn btn-primary" @click.prevent="searchItems">検索</button>
 					</form>
 				</div>
 			</div>
 		</section>
 
-		<div class="album py-5 bg-light">
+		<div class="album py-5 bg-light" v-if="showItems()">
 			<div class="container">
 
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
 
 					<!-- TODO: 取得したデータを以下で一覧表示する -->
-					<div class="col">
+					<div class="col" v-for="item in items">
 						<div class="card shadow-sm">
 							<svg class="bd-placeholder-img card-img-top" width="100%" height="225" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/><text x="50%" y="50%" fill="#eceeef" dy=".3em">Thumbnail</text></svg><!-- TODO: サムネイル表示 -->
 
@@ -90,5 +91,22 @@
 		</div>
 	</footer>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-ygbV9kiqUc6oa4msXn9868pTtWMgiQaeYH7/t7LECLbyPA2x65Kgf80OJFdroafW" crossorigin="anonymous"></script>
+	<script>
+		var app = new Vue({
+			el: '#app',
+			data: {
+				items: [],
+				q: '',
+			},
+			methods: {
+				showItems: function () {
+					return this.items.length > 0
+				},
+				searchItems: function () {
+					alert(this.q)//TODO: ajax実装
+				},
+			}
+		})
+	</script>
 </body>
 </html>

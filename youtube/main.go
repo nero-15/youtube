@@ -34,7 +34,7 @@ func main() {
 	e := echo.New()
 
 	renderer := &TemplateRenderer{
-		templates: template.Must(template.ParseGlob("views/*.html")),
+		templates: template.Must(template.New("").Delims("[[", "]]").ParseGlob("views/*.html")), // vue.jsとdelimsがかぶるので変更
 	}
 	e.Renderer = renderer
 
