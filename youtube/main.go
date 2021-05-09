@@ -14,6 +14,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+const baseURL = "https://www.googleapis.com/youtube/v3/"
+
 // TemplateRenderer is a custom html/template renderer for Echo framework
 type TemplateRenderer struct {
 	templates *template.Template
@@ -53,21 +55,21 @@ func main() {
 	})
 	e.GET("/result", func(c echo.Context) error {
 
-		baseURL, _ := url.Parse(config.Config.BaseURL)
+		url, _ := url.Parse(baseURL)
 		// https://www.googleapis.com/youtube/v3/search になるように path を設定
-		baseURL.Path = path.Join(baseURL.Path, "search")
+		url.Path = path.Join(url.Path, "search")
 
 		// パラメータをセット
 		//https://developers.google.com/youtube/v3/docs/search/list?apix=true&apix_params=%7B%22part%22%3A%22snippet%22%2C%22q%22%3A%22YouTube%20Data%20API%22%2C%22type%22%3A%22video%22%2C%22videoCaption%22%3A%22closedCaption%22%7D
-		queryParams := baseURL.Query()
+		queryParams := url.Query()
 		queryParams.Set("key", config.Config.APIKey)
 		queryParams.Set("part", "snippet")
 		queryParams.Set("order", "relevance") // rating, viewCount
 		queryParams.Set("q", "inter")         // TODO: 入力値で検索できるようにする
 		queryParams.Set("regionCode", "jp")
 		queryParams.Set("type", "video")
-		baseURL.RawQuery = queryParams.Encode()
-		resp, err := http.Get(baseURL.String())
+		url.RawQuery = queryParams.Encode()
+		resp, err := http.Get(url.String())
 		if err != nil {
 			log.Fatal(err)
 		}
