@@ -101,6 +101,7 @@ func main() {
 
 		buf := new(bytes.Buffer)
 		buf.ReadFrom(resp.Body)
+		//return c.String(http.StatusOK, buf.String())
 		jsonBytes := ([]byte)(buf.String())
 		searchResult := new(searchResult)
 		if err := json.Unmarshal(jsonBytes, searchResult); err != nil {
