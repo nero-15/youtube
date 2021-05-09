@@ -45,16 +45,6 @@ type searchResult struct {
 			Title       string    `json:"title"`
 			Description string    `json:"description"`
 			Thumbnails  struct {
-				Default struct {
-					URL    string `json:"url"`
-					Width  int    `json:"width"`
-					Height int    `json:"height"`
-				} `json:"default"`
-				Medium struct {
-					URL    string `json:"url"`
-					Width  int    `json:"width"`
-					Height int    `json:"height"`
-				} `json:"medium"`
 				High struct {
 					URL    string `json:"url"`
 					Width  int    `json:"width"`

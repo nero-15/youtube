@@ -103,14 +103,31 @@
 				showItems: function () {
 					return this.items.length > 0
 				},
+				validateNotEmptyQ: function () {
+					return this.q.length <= 0
+				},
 				searchItems: function () {
+					if (this.validateNotEmptyQ()) {alert("検索キーワードを入力してください");　return;}
 					axios.get('/api/search', {
 						params: {
 							q: app.q,
 						}
 					})
 					.then(function (response) {
-						console.log(response);
+						Object.keys(response.data.items).forEach(key => {
+							//console.log(response.data.items[key]);
+							let item = response.data.items[key]
+							app.items.push({
+								id: item.id.videoId,
+								title: item.snippet.title,
+								description: item.snippet.description,
+								imageUrl: item.snippet.thumbnails.high.url,
+							});
+						});
+					})
+					.catch(function (error) {
+						console.log(error);
+						alert("検索できませんでした");
 					});
 				},
 			}
