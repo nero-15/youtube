@@ -2,12 +2,15 @@ package main
 
 import (
 	"bytes"
+	"encoding/json"
+	"fmt"
 	"html/template"
 	"io"
 	"log"
 	"net/http"
 	"net/url"
 	"path"
+	"time"
 	"youtube/config"
 
 	echo "github.com/labstack/echo/v4"
@@ -78,8 +81,60 @@ func main() {
 		buf := new(bytes.Buffer)
 		buf.ReadFrom(resp.Body)
 
+		var jsonStr = buf.String()
+		jsonBytes := ([]byte)(jsonStr)
+		data := new(searchResult)
+		if err := json.Unmarshal(jsonBytes, data); err != nil {
+			fmt.Println("JSON Unmarshal error:", err)
+		}
+
 		return c.String(http.StatusOK, buf.String())
 	})
 
 	e.Logger.Fatal(e.Start(config.Config.Port))
+}
+
+type searchResult struct {
+	Kind          string `json:"kind"`
+	Etag          string `json:"etag"`
+	Nextpagetoken string `json:"nextPageToken"`
+	Regioncode    string `json:"regionCode"`
+	Pageinfo      struct {
+		Totalresults   int `json:"totalResults"`
+		Resultsperpage int `json:"resultsPerPage"`
+	} `json:"pageInfo"`
+	Items []struct {
+		Kind string `json:"kind"`
+		Etag string `json:"etag"`
+		ID   struct {
+			Kind    string `json:"kind"`
+			Videoid string `json:"videoId"`
+		} `json:"id"`
+		Snippet struct {
+			Publishedat time.Time `json:"publishedAt"`
+			Channelid   string    `json:"channelId"`
+			Title       string    `json:"title"`
+			Description string    `json:"description"`
+			Thumbnails  struct {
+				Default struct {
+					URL    string `json:"url"`
+					Width  int    `json:"width"`
+					Height int    `json:"height"`
+				} `json:"default"`
+				Medium struct {
+					URL    string `json:"url"`
+					Width  int    `json:"width"`
+					Height int    `json:"height"`
+				} `json:"medium"`
+				High struct {
+					URL    string `json:"url"`
+					Width  int    `json:"width"`
+					Height int    `json:"height"`
+				} `json:"high"`
+			} `json:"thumbnails"`
+			Channeltitle         string    `json:"channelTitle"`
+			Livebroadcastcontent string    `json:"liveBroadcastContent"`
+			Publishtime          time.Time `json:"publishTime"`
+		} `json:"snippet"`
+	} `json:"items"`
 }
