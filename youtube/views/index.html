@@ -104,7 +104,14 @@
 					return this.items.length > 0
 				},
 				searchItems: function () {
-					alert(this.q)//TODO: ajax実装
+					axios.get('/api/search', {
+						params: {
+							q: app.q,
+						}
+					})
+					.then(function (response) {
+						console.log(response);
+					});
 				},
 			}
 		})

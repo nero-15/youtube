@@ -47,6 +47,10 @@ func main() {
 	e.GET("/", func(c echo.Context) error {
 		return c.Render(http.StatusOK, "index.html", map[string]interface{}{})
 	})
+	e.GET("/api/search", func(c echo.Context) error {
+		q := c.QueryParam("q")
+		return c.JSON(http.StatusOK, q)
+	})
 	e.GET("/result", func(c echo.Context) error {
 
 		baseURL, _ := url.Parse(config.Config.BaseURL)
