@@ -107,6 +107,7 @@
 				},
 				searchItems: function () {
 					if (this.validateNotEmptyQ()) {alert("検索キーワードを入力してください");　return;}
+					//TODO: 検索中UIの実装（progress）
 					axios.get('/api/search', {
 						params: {
 							q: app.q,
