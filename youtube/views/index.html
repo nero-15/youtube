@@ -70,7 +70,7 @@
 									<div class="btn-group">
 										<a :href="getUrlByItemId(item.id)" target="_blank" class="btn btn-sm btn-outline-secondary">見る</a>
 									</div>
-									<small class="text-muted">{{item.publishedAt}}</small><!-- TODO: publishedAt見やすく変換 -->
+									<small class="text-muted">{{getDateByPublishedAt(item.publishedAt)}}</small>
 								</div>
 							</div>
 						</div>
@@ -132,6 +132,10 @@
 				},
 				getUrlByItemId: function (itemId) {
 					return "https://www.youtube.com/watch?v=" + itemId
+				},
+				getDateByPublishedAt: function (publishedAt) {
+					var date = new Date(publishedAt);
+					return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
 				},
 			}
 		})
