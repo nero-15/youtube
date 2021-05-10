@@ -68,7 +68,7 @@
 								<p class="card-text">{{item.description}}</p>
 								<div class="d-flex justify-content-between align-items-center">
 									<div class="btn-group">
-										<button type="button" class="btn btn-sm btn-outline-secondary">見る</button><!-- TODO: url生成する -->
+										<a :href="getUrlByItemId(item.id)" target="_blank" class="btn btn-sm btn-outline-secondary">見る</a>
 									</div>
 									<small class="text-muted">{{item.publishedAt}}</small><!-- TODO: publishedAt見やすく変換 -->
 								</div>
@@ -97,13 +97,11 @@
 			data: {
 				items: [],
 				q: '',
+				baseUrl: "https://www.youtube.com/watch",
 			},
 			methods: {
 				showItems: function () {
 					return this.items.length > 0
-				},
-				validateNotEmptyQ: function () {
-					return this.q.length <= 0
 				},
 				searchItems: function () {
 					if (this.validateNotEmptyQ()) {alert("検索キーワードを入力してください");　return;}
@@ -128,6 +126,12 @@
 					.catch(function (error) {
 						alert("検索できませんでした");
 					});
+				},
+				validateNotEmptyQ: function () {
+					return this.q.length <= 0
+				},
+				getUrlByItemId: function (itemId) {
+					return "https://www.youtube.com/watch?v=" + itemId
 				},
 			}
 		})
