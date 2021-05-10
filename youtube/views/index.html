@@ -54,7 +54,13 @@
 			</div>
 		</section>
 
-		<div class="album py-5 bg-light" v-if="showItems()">
+		<div v-if="showProgress">
+			<!-- TODO: progress 実装 -->
+			<div class="progress">
+			<div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
+			</div>
+		</div>
+		<div class="album py-5 bg-light" v-if="showItems">
 			<div class="container">
 
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -98,13 +104,13 @@
 				items: [],
 				q: '',
 				baseUrl: "https://www.youtube.com/watch",
+				showItems: false,
+				showProgress: false,
 			},
 			methods: {
-				showItems: function () {
-					return this.items.length > 0
-				},
 				searchItems: function () {
 					if (this.validateNotEmptyQ()) {alert("検索キーワードを入力してください");　return;}
+					this.showProgress = true;
 					//TODO: 検索中UIの実装（progress）
 					axios.get('/api/search', {
 						params: {
@@ -112,6 +118,7 @@
 						}
 					})
 					.then(function (response) {
+						app.items = []; //初期化
 						Object.keys(response.data.items).forEach(key => {
 							let item = response.data.items[key]
 							app.items.push({
@@ -122,9 +129,13 @@
 								publishedAt: item.snippet.publishedAt
 							});
 						});
+						app.showItems = app.items.length > 0;
 					})
 					.catch(function (error) {
 						alert("検索できませんでした");
+					})
+					.then(function(){
+						app.showProgress = false;
 					});
 				},
 				validateNotEmptyQ: function () {
