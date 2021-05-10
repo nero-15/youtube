@@ -89,6 +89,7 @@ func main() {
 		queryParams.Set("order", "relevance") // rating, viewCount
 		queryParams.Set("regionCode", "jp")
 		queryParams.Set("type", "video")
+		queryParams.Set("maxResults", "18")
 		queryParams.Set("q", q) //ここだけはUI状で入力した値をセット
 		url.RawQuery = queryParams.Encode()
 
