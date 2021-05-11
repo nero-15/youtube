@@ -46,7 +46,7 @@
 					<p class="lead text-muted">検索したいキーワードを入力してください</p>
 					<form>
 						<div class="mb-3">
-							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝" v-model="q">
+							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝" v-model="q" @change="initNextPageToken()">
 						</div>
 						<button class="btn btn-primary" type="button" disabled v-if="showSpinners">
 							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -115,6 +115,7 @@
 					axios.get('/api/search', {
 						params: {
 							q: app.q,
+							pageToken: app.nextPageToken,
 						}
 					})
 					.then(function (response) {
@@ -130,6 +131,7 @@
 							});
 						});
 						app.showItems = app.items.length > 0;
+						app.nextPageToken = response.data.nextPageToken;
 					})
 					.catch(function (error) {
 						alert("検索できませんでした");
@@ -147,6 +149,9 @@
 				getDateByPublishedAt: function (publishedAt) {
 					var date = new Date(publishedAt);
 					return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+				},
+				initNextPageToken: function () {
+					this.nextPageToken = '';
 				},
 				canShowGetMoreButton: function () {
 					return this.nextPageToken.length > 0;
