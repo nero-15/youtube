@@ -48,7 +48,7 @@
 						<div class="mb-3">
 							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝" v-model="q" @change="initNextPageToken()">
 						</div>
-						<button class="btn btn-primary" type="button" disabled v-if="showSpinners">
+						<button class="btn btn-primary" type="button" disabled v-if="showSearchSpinners">
 							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
 							読み込み中...
 						</button>
@@ -80,7 +80,11 @@
 				</div>
 
 				<div class="d-grid gap-2 col-6 mx-auto mt-5" v-if="canShowGetMoreButton()">
-					<button type="button" class="btn btn-outline-dark" @click="getMore()">もっと見る</button>
+					<button class="btn btn-outline-dark" type="button" disabled v-if="showGetMoreSpinners">
+						<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+						読み込み中...
+					</button>
+					<button type="button" class="btn btn-outline-dark" @click="getMore()" v-else>もっと見る</button>
 				</div>
 
 			</div>
@@ -105,13 +109,18 @@
 				q: '',
 				baseUrl: "https://www.youtube.com/watch",
 				showItems: false,
-				showSpinners: false,
+				showSearchSpinners: false,
+				showGetMoreSpinners: false,
 				nextPageToken: '',
 			},
 			methods: {
 				searchItems: function () {
 					if (this.validateNotEmptyQ()) {alert("検索キーワードを入力してください");　return;}
-					this.showSpinners = true;
+					this.showSearchSpinners = true;
+					this.items = []; //初期化
+					this.ajaxGetItems()
+				},
+				ajaxGetItems: function () {
 					axios.get('/api/search', {
 						params: {
 							q: app.q,
@@ -119,7 +128,6 @@
 						}
 					})
 					.then(function (response) {
-						app.items = []; //初期化
 						Object.keys(response.data.items).forEach(key => {
 							let item = response.data.items[key]
 							app.items.push({
@@ -132,12 +140,14 @@
 						});
 						app.showItems = app.items.length > 0;
 						app.nextPageToken = response.data.nextPageToken;
+						console.log(app.nextPageToken);
 					})
 					.catch(function (error) {
 						alert("検索できませんでした");
 					})
 					.then(function(){
-						app.showSpinners = false;
+						app.showSearchSpinners = false;
+						app.showGetMoreSpinners = false;
 					});
 				},
 				validateNotEmptyQ: function () {
@@ -157,7 +167,8 @@
 					return this.nextPageToken.length > 0;
 				},
 				getMore: function () {
-
+					this.showGetMoreSpinners = true;
+					this.ajaxGetItems();
 				},
 			}
 		})

@@ -93,9 +93,9 @@ func main() {
 		queryParams.Set("maxResults", "18")
 		queryParams.Set("q", q) //ここだけはUI状で入力した値をセット
 
-		nextPageToken := c.QueryParam("nextPageToken")
-		if nextPageToken != "" {
-			queryParams.Set("pageToken", nextPageToken)
+		pageToken := c.QueryParam("pageToken")
+		if pageToken != "" {
+			queryParams.Set("pageToken", pageToken)
 		}
 
 		url.RawQuery = queryParams.Encode()
