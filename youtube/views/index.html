@@ -48,18 +48,16 @@
 						<div class="mb-3">
 							<input type="text" name="q" class="form-control" placeholder="例：インテル優勝" v-model="q">
 						</div>
-						<button type="submit" class="btn btn-primary" @click.prevent="searchItems">検索</button>
+						<button class="btn btn-primary" type="button" disabled v-if="showSpinners">
+							<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+							読み込み中...
+						</button>
+						<button type="submit" class="btn btn-primary" @click.prevent="searchItems" v-else>検索</button>
 					</form>
 				</div>
 			</div>
 		</section>
 
-		<div v-if="showProgress">
-			<!-- TODO: progress 実装 -->
-			<div class="progress">
-			<div class="progress-bar progress-bar-striped" role="progressbar" style="width: 10%" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100"></div>
-			</div>
-		</div>
 		<div class="album py-5 bg-light" v-if="showItems">
 			<div class="container">
 
@@ -105,13 +103,12 @@
 				q: '',
 				baseUrl: "https://www.youtube.com/watch",
 				showItems: false,
-				showProgress: false,
+				showSpinners: false,
 			},
 			methods: {
 				searchItems: function () {
 					if (this.validateNotEmptyQ()) {alert("検索キーワードを入力してください");　return;}
-					this.showProgress = true;
-					//TODO: 検索中UIの実装（progress）
+					this.showSpinners = true;
 					axios.get('/api/search', {
 						params: {
 							q: app.q,
@@ -135,7 +132,7 @@
 						alert("検索できませんでした");
 					})
 					.then(function(){
-						app.showProgress = false;
+						app.showSpinners = false;
 					});
 				},
 				validateNotEmptyQ: function () {
