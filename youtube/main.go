@@ -35,7 +35,8 @@ func (t *TemplateRenderer) Render(w io.Writer, name string, data interface{}, c 
 }
 
 type searchResult struct {
-	Items []struct {
+	Nextpagetoken string `json:"nextPageToken"`
+	Items         []struct {
 		ID struct {
 			Videoid string `json:"videoId"`
 		} `json:"id"`
@@ -91,6 +92,12 @@ func main() {
 		queryParams.Set("type", "video")
 		queryParams.Set("maxResults", "18")
 		queryParams.Set("q", q) //ここだけはUI状で入力した値をセット
+
+		pageToken := c.QueryParam("pageToken")
+		if pageToken != "" {
+			queryParams.Set("pageToken", pageToken)
+		}
+
 		url.RawQuery = queryParams.Encode()
 
 		resp, err := http.Get(url.String())
