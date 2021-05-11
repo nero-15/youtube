@@ -62,11 +62,9 @@
 			<div class="container">
 
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-
 					<div class="col card-group" v-for="item in items">
 						<div class="card shadow-sm">
 							<img :src="item.imageUrl" class="bd-placeholder-img card-img-top" width="100%">
-
 							<div class="card-body">
 								<h5 class="card-title">{{item.title}}</h5>
 								<p class="card-text">{{item.description}}</p>
@@ -79,8 +77,12 @@
 							</div>
 						</div>
 					</div>
-
 				</div>
+
+				<div class="d-grid gap-2 col-6 mx-auto mt-5" v-if="canShowGetMoreButton()">
+					<button type="button" class="btn btn-outline-dark" @click="getMore()">もっと見る</button>
+				</div>
+
 			</div>
 		</div>
 
@@ -104,6 +106,7 @@
 				baseUrl: "https://www.youtube.com/watch",
 				showItems: false,
 				showSpinners: false,
+				nextPageToken: '',
 			},
 			methods: {
 				searchItems: function () {
@@ -144,6 +147,12 @@
 				getDateByPublishedAt: function (publishedAt) {
 					var date = new Date(publishedAt);
 					return date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate()
+				},
+				canShowGetMoreButton: function () {
+					return this.nextPageToken.length > 0;
+				},
+				getMore: function () {
+
 				},
 			}
 		})
