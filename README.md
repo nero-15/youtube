@@ -10,7 +10,7 @@ Youtube Data API の開発練習用。サーバ側はGo言語、フロントエ�
 - axios 0.21.1
 
 ## 初期対応
-Youtube Data API の使用のはAPIキーが必要なので以下のconfig.ini.defaultファイルからconfig.iniを作成してAPIキーを指定してください。
+Youtube Data API の使用にはAPIキーが必要なので以下のconfig.ini.defaultファイルからconfig.iniを作成してAPIキーを指定してください。
 
 ```
 cd youtube/config
