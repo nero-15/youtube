@@ -17,3 +17,5 @@ cd youtube/config
 mv config.ini.default config.ini
 ```
 
+https://github.com/nero-15/youtube/blob/main/youtube/config/config.ini.default#L2
+
