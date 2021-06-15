@@ -6,6 +6,11 @@ Youtube Data API の開発練習用。サーバ側はGo言語、フロントエ�
 
 ![Videotogif](https://user-images.githubusercontent.com/36409720/117988401-5647f000-b376-11eb-8833-1371df3c6601.gif)
 
+### UI
+https://nero-15.github.io/youtube/youtube/views/index.html
+
+※github pages なので検索はできません
+
 ## 環境
 - go 1.14.3
 - bootstrap 5.0.0
